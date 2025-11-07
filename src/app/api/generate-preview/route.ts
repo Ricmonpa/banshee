@@ -59,7 +59,8 @@ export async function POST(request: NextRequest) {
       })
       
     } catch (directError) {
-      console.warn('⚠️ Direct upload failed, trying URL method:', directError.message)
+      const errorMessage = directError instanceof Error ? directError.message : 'Unknown error'
+      console.warn('⚠️ Direct upload failed, trying URL method:', errorMessage)
       
       // Fallback: usar URL method
       transcriptionResponse = await fetch('https://api.deepgram.com/v1/listen', {
