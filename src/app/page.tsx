@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Mic } from 'lucide-react'
 import VoiceRecorder from '@/components/VoiceRecorder'
+import Logo from '@/components/Logo'
 
 export default function HomePage() {
   const [showRecorder, setShowRecorder] = useState(false)
@@ -12,9 +13,7 @@ export default function HomePage() {
       <div className="max-w-md w-full text-center space-y-8">
         {/* Logo */}
         <div className="space-y-4">
-          <h1 className="text-4xl font-bold text-gray-900">
-            BANSHEE
-          </h1>
+          <Logo size="xl" />
           <p className="text-xl text-gray-600">
             Que tu voz haga un libro.
           </p>
