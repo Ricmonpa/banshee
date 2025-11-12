@@ -31,7 +31,7 @@ export default function HomePage() {
         {/* Login secundario */}
         <p className="text-sm text-gray-500">
           ¿Ya tienes una cuenta?{' '}
-          <a href="/login" className="text-banshee-primary hover:underline">
+          <a href="/auth/login" className="text-banshee-primary hover:underline">
             Iniciar sesión
           </a>
         </p>
