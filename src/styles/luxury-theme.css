@@ -1,0 +1,29 @@
+/**
+ * Banshee — Luxury design tokens
+ * Use these variables in non-Tailwind CSS or for consistency.
+ */
+
+:root {
+  /* Primary */
+  --luxury-void: #0A0A0A;
+  --luxury-navy: #0B1D2E;
+  --luxury-carbon: #2B2B2B;
+
+  /* Neutrals */
+  --luxury-cream: #F5F1E8;
+  --luxury-cream-warm: #EDE6D6;
+  --luxury-cream-dark: #f8f5f0;
+  --luxury-warm-gray: #8B8680;
+
+  /* Accents */
+  --luxury-gold: #D4AF37;
+  --luxury-copper: #B87333;
+
+  /* Typography */
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  /* Transitions */
+  --duration-luxury: 0.4s;
+  --ease-luxury: ease-out;
+}

@@ -9,35 +9,45 @@ export default function HomePage() {
   const [showRecorder, setShowRecorder] = useState(false)
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      <div className="max-w-md w-full text-center space-y-8">
-        {/* Logo */}
-        <div className="space-y-4">
-          <Logo size="xl" />
-          <p className="text-xl text-gray-600">
+    <div className="min-h-screen flex flex-col bg-void text-cream">
+      {/* Hero */}
+      <header className="flex flex-col items-center justify-center flex-1 px-6 py-20 md:py-32">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="mb-12 md:mb-16">
+            <Logo size="xl" variant="dark" />
+          </div>
+
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-cream leading-tight mb-6 animate-fade-in">
             Que tu voz haga un libro.
+            <br />
+            <span className="text-gold/95">Y que un libro haga tu voz.</span>
+          </h1>
+
+          <p className="font-sans text-lg md:text-xl text-cream/80 mb-12 md:mb-16 max-w-lg mx-auto leading-relaxed">
+            Editorial boutique para líderes que escriben legados
           </p>
+
+          <button
+            onClick={() => setShowRecorder(true)}
+            className="btn-primary border-gold text-cream hover:bg-gold hover:text-void inline-flex items-center justify-center gap-3 text-lg py-4 px-10"
+          >
+            <Mic className="w-5 h-5" strokeWidth={1.5} />
+            Comenzar mi libro
+          </button>
         </div>
+      </header>
 
-        {/* CTA Principal */}
-        <button
-          onClick={() => setShowRecorder(true)}
-          className="btn-primary w-full flex items-center justify-center gap-3 text-lg py-4"
-        >
-          <Mic className="w-6 h-6" />
-          Empezar a grabar
-        </button>
-
-        {/* Login secundario */}
-        <p className="text-sm text-gray-500">
-          ¿Ya tienes una cuenta?{' '}
-          <a href="/auth/login" className="text-banshee-primary hover:underline">
+      {/* Footer minimalista */}
+      <footer className="py-6 px-6 border-t border-cream/10">
+        <div className="max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-cream/60 font-sans">
+          <span className="font-serif italic text-cream/50">Since 2025</span>
+          <a href="/auth/login" className="hover:text-cream transition-colors duration-400">
             Iniciar sesión
           </a>
-        </p>
-      </div>
+          <span className="text-cream/40">Powered by AI. Crafted by Humans.</span>
+        </div>
+      </footer>
 
-      {/* Modal de grabación */}
       {showRecorder && (
         <VoiceRecorder onClose={() => setShowRecorder(false)} />
       )}

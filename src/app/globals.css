@@ -1,34 +1,111 @@
+@import '../styles/luxury-theme.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ========== LUXURY THEME - Banshee Editorial ========== */
+/* Paleta: Negro profundo, dorado (acentos), cremas, grises cálidos */
+
 @layer base {
   html {
-    font-family: system-ui, sans-serif;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply text-carbon bg-cream min-h-screen;
   }
 }
 
+/* Textura de fondo sutil (grain) - aplicada globalmente */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
+
 @layer components {
+  /* Botón primario luxury - borde dorado, hover relleno */
   .btn-primary {
-    @apply bg-banshee-primary hover:bg-banshee-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-colors;
+    @apply border-[1.5px] border-gold bg-transparent text-void py-3.5 px-8 font-sans text-base tracking-wide transition-all duration-400 ease-out;
   }
-  
+  .btn-primary:hover {
+    @apply bg-gold text-white;
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+  }
+
+  .btn-primary-inverse {
+    @apply border-[1.5px] border-gold bg-gold text-white py-3.5 px-8 font-sans text-base tracking-wide transition-all duration-400 ease-out;
+  }
+  .btn-primary-inverse:hover {
+    @apply bg-gold/90 border-gold/90;
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.25);
+  }
+
   .btn-secondary {
-    @apply bg-gray-100 hover:bg-gray-200 text-gray-900 font-medium py-3 px-6 rounded-lg transition-colors;
+    @apply bg-transparent border border-warm-gray/30 text-carbon hover:border-warm-gray hover:bg-warm-gray/5 font-sans text-base py-3.5 px-8 tracking-wide transition-all duration-400;
+  }
+
+  /* Cards/Containers luxury */
+  .luxury-card {
+    @apply bg-white border border-black/[0.08] shadow-soft rounded-sm p-8 md:p-12;
+  }
+
+  /* Headings serif */
+  .font-serif-display {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  /* Quote / testimonios */
+  .font-serif-quote {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
   }
 }
 
 @layer utilities {
-  .book-shadow {
-    box-shadow: 
-      0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -1px rgba(0, 0, 0, 0.06),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  .duration-400 {
+    transition-duration: 0.4s;
   }
-  
+  .duration-500 {
+    transition-duration: 0.5s;
+  }
+  .duration-600 {
+    transition-duration: 0.6s;
+  }
+
+  .shadow-soft {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  }
+
+  .shadow-gold {
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+  }
+
+  .book-shadow {
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.06),
+      0 2px 8px rgba(0, 0, 0, 0.03);
+  }
+
   .page-texture {
-    background-image: 
-      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
-    background-size: 20px 20px;
+    background-color: #f8f5f0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+
+  /* Números tabulares para timer */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
   }
 }
