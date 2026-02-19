@@ -19,10 +19,10 @@ interface BookData {
 
 interface InteractiveBookProps {
   bookData: BookData
-  onCreateAccount: () => void
+  onContinue: () => void
 }
 
-export default function InteractiveBook({ bookData, onCreateAccount }: InteractiveBookProps) {
+export default function InteractiveBook({ bookData, onContinue }: InteractiveBookProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
 
@@ -177,13 +177,13 @@ Esta estructura garantiza un flujo natural que guía al lector desde el primer c
                 ¿Te gusta lo que ves?
               </h3>
               <p className="text-carbon/80 font-sans text-base md:text-lg mb-10 md:mb-12 leading-relaxed max-w-xl">
-                Este es solo el comienzo. Crea tu cuenta para guardar tu progreso y continuar desarrollando tu libro con la ayuda de nuestro Coach IA.
+                Responde unas preguntas y te generamos el teaser de tu primer capítulo.
               </p>
               <button
-                onClick={onCreateAccount}
+                onClick={onContinue}
                 className="btn-primary-inverse text-lg px-10 py-4"
               >
-                Crear mi cuenta
+                Continuar con mi libro
               </button>
             </div>
           ) : (
@@ -204,13 +204,13 @@ Esta estructura garantiza un flujo natural que guía al lector desde el primer c
                         ¿Te gusta lo que ves?
                       </h3>
                       <p className="text-carbon/80 font-sans mb-8 max-w-md leading-relaxed">
-                        Crea tu cuenta para guardar tu progreso y continuar con tu libro.
+                        Responde unas preguntas y te generamos el teaser de tu primer capítulo.
                       </p>
                       <button
-                        onClick={onCreateAccount}
+                        onClick={onContinue}
                         className="btn-primary-inverse"
                       >
-                        Crear mi cuenta
+                        Continuar con mi libro
                       </button>
                     </div>
                   )}

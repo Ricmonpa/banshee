@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import InteractiveBook from '@/components/InteractiveBook'
+import LeadGate from '@/components/LeadGate'
 
 interface BookAnalysis {
   title: string
@@ -25,7 +26,14 @@ export default function PreviewPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [previewData, setPreviewData] = useState<PreviewData | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [leadCaptured, setLeadCaptured] = useState<boolean | null>(null)
   const router = useRouter()
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setLeadCaptured(window.localStorage.getItem('banshee_lead_captured') === 'true')
+    }
+  }, [])
 
   useEffect(() => {
     const generatePreview = async () => {
@@ -73,25 +81,40 @@ export default function PreviewPage() {
     generatePreview()
   }, [router])
 
-  const handleCreateAccount = () => {
-    // Redirigir al registro manteniendo los datos
-    router.push('/auth/register')
+  const handleLeadSuccess = () => setLeadCaptured(true)
+
+  const handleContinueToQuestionnaire = () => {
+    router.push('/cuestionario')
   }
 
-  // Si tenemos datos del preview, mostrar el libro interactivo
-  if (previewData && !isLoading && !error) {
+  // CANDADO 1: si hay preview y aún no hemos capturado lead, mostrar formulario
+  if (previewData && !isLoading && !error && leadCaptured !== true) {
+    return (
+      <LeadGate
+        title="Tu prólogo está listo"
+        subtitle="Déjanos tu email y nombre para verlo."
+        onSuccess={handleLeadSuccess}
+      />
+    )
+  }
+
+  // Si tenemos datos del preview y lead capturado, mostrar el libro interactivo
+  if (previewData && !isLoading && !error && leadCaptured === true) {
+    const authorName =
+      (typeof window !== 'undefined' && window.localStorage.getItem('banshee_lead_name')) ||
+      'Tu nombre'
     const bookData = {
       title: previewData.analysis.title,
-      author: "Tu Nombre", // Esto se puede personalizar después
+      author: authorName,
       summary: previewData.analysis.summary,
       tone: previewData.analysis.tone,
       structure: previewData.analysis.structure
     }
 
     return (
-      <InteractiveBook 
+      <InteractiveBook
         bookData={bookData}
-        onCreateAccount={handleCreateAccount}
+        onContinue={handleContinueToQuestionnaire}
       />
     )
   }
