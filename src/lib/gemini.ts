@@ -35,7 +35,9 @@ export class GeminiError extends Error {
  * Lanza GeminiError con el status y el body reales si la API falla.
  */
 export async function generateText(prompt: string, options: GenerateOptions = {}): Promise<string> {
-  const apiKey = process.env.GEMINI_API_KEY
+  // Se recorta porque un salto de línea o espacio pegado junto a la key al
+  // guardarla en Vercel hace que Google conteste 400 API_KEY_INVALID.
+  const apiKey = process.env.GEMINI_API_KEY?.trim()
   if (!apiKey) {
     throw new GeminiError('GEMINI_API_KEY no está configurada', 0, '')
   }
