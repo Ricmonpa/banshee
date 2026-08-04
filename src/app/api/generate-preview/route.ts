@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { generateJson } from '@/lib/gemini'
 
 export async function POST(request: NextRequest) {
   try {
@@ -113,7 +112,43 @@ export async function POST(request: NextRequest) {
 
 Transcripción: ${finalText}`
 
-    const bookAnalysis = await generateJson(geminiPrompt)
+    const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: geminiPrompt
+          }]
+        }]
+      }),
+    })
+
+    if (!geminiResponse.ok) {
+      const errorText = await geminiResponse.text()
+      console.error('❌ Gemini API error:', geminiResponse.status, geminiResponse.statusText, errorText)
+      throw new Error(`Gemini API failed (${geminiResponse.status}): ${errorText}`)
+    }
+
+    const geminiData = await geminiResponse.json()
+    const generatedText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text
+
+    if (!generatedText) {
+      throw new Error('No response from Gemini')
+    }
+
+    // Parsear el JSON de la respuesta de Gemini
+    let bookAnalysis
+    try {
+      // Limpiar la respuesta de Gemini (a veces incluye markdown)
+      const cleanedText = generatedText.replace(/```json\n?|\n?```/g, '').trim()
+      bookAnalysis = JSON.parse(cleanedText)
+    } catch (parseError) {
+      console.error('Failed to parse Gemini response:', generatedText)
+      throw new Error('Invalid JSON response from AI')
+    }
 
     // Respuesta final
     return NextResponse.json({

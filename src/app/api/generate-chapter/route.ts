@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { generateText } from '@/lib/gemini'
 
 export async function POST(request: NextRequest) {
   try {
@@ -35,7 +34,25 @@ INSTRUCCIONES:
 - No incluyas título de capítulo ni numeración; solo el cuerpo del texto.
 - Responde únicamente con el texto del teaser, sin explicaciones.`
 
-    const chapterText = (await generateText(prompt)).trim()
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+        }),
+      }
+    )
+
+    if (!geminiRes.ok) {
+      const errText = await geminiRes.text()
+      console.error('❌ Gemini error:', geminiRes.status, geminiRes.statusText, errText)
+      throw new Error(`Error al generar el capítulo (${geminiRes.status}): ${errText}`)
+    }
+
+    const geminiData = await geminiRes.json()
+    const chapterText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || ''
 
     if (!chapterText) {
       throw new Error('No se pudo generar el texto del capítulo')
