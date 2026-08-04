@@ -61,7 +61,17 @@ export default function PreviewPage() {
         })
 
         if (!response.ok) {
-          throw new Error('Failed to generate preview')
+          // El body trae el detalle real del fallo (status de Gemini, etc.);
+          // sin esto el console solo mostraba un mensaje genérico.
+          const raw = await response.text()
+          console.error('❌ /api/generate-preview', response.status, raw)
+          let detail = raw
+          try {
+            detail = JSON.parse(raw).details || raw
+          } catch {
+            // el body no era JSON; nos quedamos con el texto crudo
+          }
+          throw new Error(`generate-preview ${response.status}: ${detail}`)
         }
 
         const data = await response.json()
