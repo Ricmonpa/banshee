@@ -47,8 +47,8 @@ INSTRUCCIONES:
 
     if (!geminiRes.ok) {
       const errText = await geminiRes.text()
-      console.error('Gemini error:', errText)
-      throw new Error('Error al generar el capítulo')
+      console.error('❌ Gemini error:', geminiRes.status, geminiRes.statusText, errText)
+      throw new Error(`Error al generar el capítulo (${geminiRes.status}): ${errText}`)
     }
 
     const geminiData = await geminiRes.json()

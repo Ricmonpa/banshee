@@ -112,7 +112,10 @@ export async function POST(request: NextRequest) {
 
 Transcripción: ${finalText}`
 
-    const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+    const geminiUrl = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent'
+    console.log('🤖 Calling Gemini:', geminiUrl, 'key present:', !!process.env.GEMINI_API_KEY)
+
+    const geminiResponse = await fetch(`${geminiUrl}?key=${process.env.GEMINI_API_KEY}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -126,10 +129,12 @@ Transcripción: ${finalText}`
       }),
     })
 
+    console.log('📡 Gemini response status:', geminiResponse.status)
+
     if (!geminiResponse.ok) {
-      const errorText = await geminiResponse.text()
-      console.error('❌ Gemini API error:', errorText)
-      throw new Error(`Gemini API failed: ${errorText}`)
+      const errorBody = await geminiResponse.text()
+      console.error('❌ Gemini error:', geminiResponse.status, geminiResponse.statusText, errorBody)
+      throw new Error(`Gemini API failed (${geminiResponse.status}): ${errorBody}`)
     }
 
     const geminiData = await geminiResponse.json()
